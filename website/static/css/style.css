@@ -1,0 +1,94 @@
+.d-flex .btn{
+    background: orange;
+    border: 2px solid orange;
+    border-radius: 8px;
+    color: #fff;
+}
+.d-flex .btn:hover{
+    background: rgb(228, 150, 7);
+    border: 2px solid rgb(228, 150, 7);
+}
+
+#right1 :hover{
+    color: orange;
+    transition: 300ms;
+}
+
+.row .right2 {
+    margin-left: -10px;
+    height: 180px;
+    width: 180px;
+    border-radius: 10px;
+}
+
+.container .row .col .row .col a {
+    background-color: orange;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+
+}
+
+.container .row .col .row .col a :hover {
+    background-color: rgb(201, 132, 5);
+}
+#column :hover{
+    transform: scale(0.9);
+    transition: 450ms;
+    border-radius: 10px;
+}
+
+#items :hover {
+    color: orange;
+    transition: 200ms;
+}
+
+.container {
+    max-width: 1200px; /* Limit the width for larger screens */
+}
+
+h1 {
+    font-size: 2.5rem; /* Increase the font size for the product name */
+    color: #333; /* Darker color for better readability */
+}
+
+.text-danger {
+    font-size: 1.5rem; /* Larger size for the current price */
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+.text-secondary {
+    color: #6c757d; /* Bootstrap secondary color */
+}
+
+.img-fluid {
+    max-height: 400px; /* Limit the height of the product image */
+    object-fit: cover; /* Maintain aspect ratio */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Bootstrap secondary color */
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Darker shade on hover */
+    border-color: #545b62; /* Darker border on hover */
+}
+
+.shadow {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.rounded {
+    border-radius: 0.5rem; /* Rounded corners for the image */
+}
+
+.text-decoration-line-through {
+    text-decoration: line-through; /* Strikethrough style */
+}
+
+.font-weight-bold {
+    font-weight: bold; /* Bold font for important text */
+}

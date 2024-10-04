@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block body %}
+<div class="container text-center">
+    <div class="row" style="margin: 8px;">
+        <div class="col" style="display: flex; background-color: white; border-radius: 10px; padding: 7px; margin: 5px;">
+            <img src="../static/images/techweek.png" alt="" style="width: 30px; height: 30px;">
+            <h6 style="margin: 4px">Acrylic Products</h6>
+        </div>
+        <div class="col" style="display: flex; background-color: white; border-radius: 10px; padding: 7px; margin: 5px;">
+            <img src="../static/images/FreeDelivery.png" alt="" style="width: 30px; height: 30px;">
+            <h6 style="margin: 4px">Free Delivery</h6>
+        </div>
+        <div class="col" style="display: flex; background-color: white; border-radius: 10px; padding: 7px; margin: 5px;">
+            <img src="../static/images/food.png" alt="" style="width: 30px; height: 30px;">
+            <h6 style="margin: 4px">Frendly  Service</h6>
+        </div>
+        <div class="col" style="display: flex; background-color: white; border-radius: 10px; padding: 7px; margin: 5px;">
+            <img src="../static/images/airtime.png" alt="" style="width: 30px; height: 30px;">
+            <h6 style="margin: 4px">1000+ Satisfied Coustomers</h6>
+        </div>
+    </div>
+</div>
+
+<div class="container text-center">
+    <div class="row" style="margin: 8px; background-color: rgb(219, 218, 218);" id="column">
+        {% for item in items %}
+        <div class="col-md-4" style="background-color: white; padding: 10px; margin-bottom: 20px;">
+            <a href="{{ url_for('admin.product_details', product_id=item.id) }}" style="text-decoration: none; color: inherit;">
+                <img src="{{ item.product_picture }}" alt="" style="height: 202px; width: 180px; border-radius: 10px;">
+
+                <div class="row" style="margin-top: 5px;">
+                    <h6 style="color: gray;">{{ item.product_name }}</h6>
+                </div>
+
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col">
+                        <h5 style="font-weight: 600; font-family: 'Times New Roman', Times, serif;">Ksh {{ item.current_price }}</h5>
+                        <strike><p style="color: gray;">Ksh {{ item.previous_price }}</p></strike>
+                    </div>
+                </div>
+
+                <div class="" style="margin-top: 10px;">
+                    <div class="col">
+                        <form action="{{ url_for('views.add_to_cart', item_id=item.id) }}" method="POST">
+                            <button type="submit" class="btn btn-warning">Add To Cart</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <p>{{ item.in_stock }} Items Left</p>
+                </div>
+            </a>
+        </div>
+        {% if loop.index % 3 == 0 %}
+            </div><div class="row" style="margin: 8px; background-color: rgb(219, 218, 218);" id="column">
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

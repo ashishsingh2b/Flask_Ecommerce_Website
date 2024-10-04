@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ items.product_name }} Details {% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="bg-white p-3 rounded shadow" style="height: 400px; overflow: hidden;">
+                <img src="{{ url_for('admin.get_image', filename=items.product_picture.split('/')[-1]) }}" 
+                     alt="{{ items.product_name }}" 
+                     class="img-fluid rounded" style="max-height: 100%; width: 100%; object-fit: contain;">
+            </div>
+        </div>
+        <div class="col-md-6 bg-white text-dark p-4">
+            <h1 class="mb-3">{{ items.product_name }}</h1>
+            <p class="text-muted">
+                <strong>Current Price:</strong> 
+                <span class="text-danger display-4">${{ items.current_price }}</span>
+            </p>
+            <p class="text-muted">
+                <strong>Previous Price:</strong> 
+                <span class="text-secondary text-decoration-line-through">${{ items.previous_price }}</span>
+            </p>
+            <p class="text-muted">
+                <strong>In Stock:</strong> 
+                <span class="font-weight-bold">{{ items.in_stock }}</span>
+            </p>
+            <p class="text-muted">
+                <strong>Flash Sale:</strong> 
+                <span class="font-weight-bold {{ 'text-success' if items.flash_sale else 'text-danger' }}">
+                    {{ 'Yes' if items.flash_sale else 'No' }}
+                </span>
+            </p>
+            <p class="text-muted">
+                <strong>Date Added:</strong> 
+                <span class="font-weight-bold">{{ items.date_added.strftime('%Y-%m-%d') }}</span>
+            </p>
+            <div class="mt-4">
+                <form action="{{ url_for('views.add_to_cart', item_id=items.id) }}" method="POST">
+                    <button type="submit" class="btn btn-secondary mt-3">Add To Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <!-- Back to Shop Details Button -->
+    <a href="/" class="btn" style="background-color: black; color: white; padding: 8px 16px;">Back to Home</a>
+</div>
+{% endblock %}
