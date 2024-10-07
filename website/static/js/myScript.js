@@ -1,8 +1,8 @@
-$('.plus-cart').click(function(){
-    console.log('Button clicked')
+$('.plus-cart').click(function() {
+    console.log('Button clicked');
 
-    var id = $(this).attr('pid').toString()
-    var quantity = this.parentNode.children[2]
+    var id = $(this).attr('pid').toString();
+    var quantity = this.parentNode.children[2];
 
     $.ajax({
         type: 'GET',
@@ -10,24 +10,24 @@ $('.plus-cart').click(function(){
         data: {
             cart_id: id
         },
-        
-        success: function(data){
-            console.log(data)
-            quantity.innerText = data.quantity
-            document.getElementById(`quantity${id}`).innerText = data.quantity
-            document.getElementById('amount_tt').innerText = data.amount
-            document.getElementById('totalamount').innerText = data.total
-
+        success: function(data) {
+            console.log(data);
+            quantity.innerText = data.quantity;
+            document.getElementById(`quantity${id}`).innerText = data.quantity;
+            document.getElementById('amount_tt').innerText = data.amount;
+            document.getElementById('totalamount').innerText = data.total;
+        },
+        error: function(err) {
+            console.error("Error updating quantity:", err);
         }
-    })
-})
+    });
+});
 
+$('.minus-cart').click(function() {
+    console.log('Button clicked');
 
-$('.minus-cart').click(function(){
-    console.log('Button clicked')
-
-    var id = $(this).attr('pid').toString()
-    var quantity = this.parentNode.children[2]
+    var id = $(this).attr('pid').toString();
+    var quantity = this.parentNode.children[2];
 
     $.ajax({
         type: 'GET',
@@ -35,24 +35,22 @@ $('.minus-cart').click(function(){
         data: {
             cart_id: id
         },
-        
-        success: function(data){
-            console.log(data)
-            quantity.innerText = data.quantity
-            document.getElementById(`quantity${id}`).innerText = data.quantity
-            document.getElementById('amount_tt').innerText = data.amount
-            document.getElementById('totalamount').innerText = data.total
-
+        success: function(data) {
+            console.log(data);
+            quantity.innerText = data.quantity;
+            document.getElementById(`quantity${id}`).innerText = data.quantity;
+            document.getElementById('amount_tt').innerText = data.amount;
+            document.getElementById('totalamount').innerText = data.total;
+        },
+        error: function(err) {
+            console.error("Error updating quantity:", err);
         }
-    })
-})
+    });
+});
 
-
-$('.remove-cart').click(function(){
-    
-    var id = $(this).attr('pid').toString()
-
-    var to_remove = this.parentNode.parentNode.parentNode.parentNode
+$('.remove-cart').click(function() {
+    var id = $(this).attr('pid').toString();
+    var to_remove = this.parentNode.parentNode.parentNode.parentNode;
 
     $.ajax({
         type: 'GET',
@@ -60,13 +58,13 @@ $('.remove-cart').click(function(){
         data: {
             cart_id: id
         },
-
-        success: function(data){
-            document.getElementById('amount_tt').innerText = data.amount
-            document.getElementById('totalamount').innerText = data.total
-            to_remove.remove()
+        success: function(data) {
+            document.getElementById('amount_tt').innerText = data.amount;
+            document.getElementById('totalamount').innerText = data.total;
+            to_remove.remove();
+        },
+        error: function(err) {
+            console.error("Error removing item from cart:", err);
         }
-    })
-
-
-})
+    });
+});

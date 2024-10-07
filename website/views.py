@@ -3,14 +3,15 @@ from flask_login import login_required, current_user
 from .models import Product, Cart, Order
 from . import db
 import paypalrestsdk
+import os
 
 views = Blueprint('views', __name__)
 
 # PayPal SDK Configuration
 paypalrestsdk.configure({
-    "mode": "sandbox",  # Change to "live" for production
-    "client_id": 'YOUR_CLIENT_ID',  # Replace with your PayPal client ID
-    "client_secret": 'YOUR_CLIENT_SECRET'  # Replace with your PayPal client secret
+    "mode": os.getenv('PAYPAL_MODE', 'sandbox'),  # Change to "live" for production
+    "client_id": os.getenv('PAYPAL_CLIENT_ID'),  
+    "client_secret": os.getenv('PAYPAL_CLIENT_SECRET')  
 })
 
 @views.route('/')
@@ -34,8 +35,8 @@ def add_to_cart(item_id):
             db.session.commit()
             flash(f'Quantity of {item_exists.product.product_name} has been updated', 'success')
         except Exception as e:
-            print('Quantity not updated:', e)
-            flash(f'Quantity of {item_exists.product.product_name} not updated', 'error')
+            db.session.rollback()
+            flash(f'Quantity of {item_exists.product.product_name} could not be updated: {str(e)}', 'error')
     else:
         new_cart_item = Cart(quantity=1, product_link=item_to_add.id, customer_link=current_user.id)
         try:
@@ -43,8 +44,8 @@ def add_to_cart(item_id):
             db.session.commit()
             flash(f'{new_cart_item.product.product_name} added to cart', 'success')
         except Exception as e:
-            print('Item not added to cart:', e)
-            flash(f'{new_cart_item.product.product_name} has not been added to cart', 'error')
+            db.session.rollback()
+            flash(f'{new_cart_item.product.product_name} could not be added to cart: {str(e)}', 'error')
 
     return redirect(request.referrer)
 
@@ -53,7 +54,7 @@ def add_to_cart(item_id):
 def show_cart():
     cart = Cart.query.filter_by(customer_link=current_user.id).all()
     amount = sum(item.product.current_price * item.quantity for item in cart)
-    return render_template('cart.html', cart=cart, amount=amount, total=amount )
+    return render_template('cart.html', cart=cart, amount=amount, total=amount)
 
 @views.route('/pluscart')
 @login_required
@@ -93,9 +94,9 @@ def update_cart_response():
     amount = sum(item.product.current_price * item.quantity for item in cart)
 
     data = {
-        'quantity': len(cart),  # Change to total items in cart
+        'quantity': len(cart),  
         'amount': amount,
-        'total': amount   # Include shipping fee
+        'total': amount  
     }
     return jsonify(data)
 
@@ -105,14 +106,13 @@ def place_order():
     customer_cart = Cart.query.filter_by(customer_link=current_user.id).all()
     if customer_cart:
         try:
-            # Calculate total without shipping
-            total = sum(item.product.current_price * item.quantity for item in customer_cart)  # Removed shipping
-            total_amount = str(total)  # Convert to string for PayPal
+            total = sum(item.product.current_price * item.quantity for item in customer_cart)  
+            total_amount = str(total)  
 
             items = [{
                 "name": item.product.product_name,
                 "sku": item.product.id,
-                "price": str(item.product.current_price),  # Convert to string
+                "price": str(item.product.current_price),  
                 "currency": "USD",
                 "quantity": item.quantity
             } for item in customer_cart]
@@ -131,7 +131,7 @@ def place_order():
                         "items": items
                     },
                     "amount": {
-                        "total": total_amount,  # Ensure this matches the total of items only
+                        "total": total_amount,  
                         "currency": "USD"
                     },
                     "description": "Purchase of goods"
@@ -141,14 +141,14 @@ def place_order():
             if payment.create():
                 for link in payment.links:
                     if link.rel == "approval_url":
-                        return redirect(link.href)  # Redirect the user to PayPal for approval
+                        return redirect(link.href)  
             else:
                 flash(f'Payment could not be created: {payment.error}', 'error')
                 return redirect('/')
 
         except Exception as e:
-            print(e)
-            flash('An error occurred while placing the order', 'error')
+            db.session.rollback()
+            flash('An error occurred while placing the order: ' + str(e), 'error')
             return redirect('/')
 
     else:
@@ -166,24 +166,22 @@ def payment_success():
         for item in Cart.query.filter_by(customer_link=current_user.id).all():
             total_price = item.product.current_price * item.quantity
             
-            # Create the order object with the updated attributes
             order = Order(
                 product_link=item.product_link,
                 customer_link=current_user.id,
                 quantity=item.quantity,
-                price=total_price,  # Set the price to the total price of this item
-                status='Completed',  # Set the order status
-                payment_id=payment_id  # Store the payment ID for tracking
+                price=total_price,
+                status='Completed',
+                payment_id=payment_id  
             )
-            db.session.add(order)  # Store order in database
-            db.session.delete(item)  # Remove item from cart
+            db.session.add(order)
+            db.session.delete(item)
         db.session.commit()
         flash('Payment completed successfully!', 'success')
         return redirect('/orders')
     else:
         flash('Payment execution failed', 'error')
         return redirect('/')
-    
 
 @views.route('/payment-cancel')
 def payment_cancel():
@@ -231,4 +229,4 @@ from website import create_app
 app = create_app()
 
 if __name__ == '__main__':
-    app.run(debug=True)  # Run the app in debug mode
+    app.run(debug=True)
