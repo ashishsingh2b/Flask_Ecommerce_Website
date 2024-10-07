@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <title>Amazon | {% block title %} {% endblock %}</title>
+    <title>A A Acrylic | {% block title %} {% endblock %}</title>
 
     <style>
         body {
@@ -34,17 +34,18 @@
 
     <!-- navbar section -->
     <nav class="navbar navbar-expand-lg" style="background-color: white;">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#" style="color: orange; font-size: 30px; margin-right: -2px;">
-                <i class="fa-brands fa-amazon"></i>
-            </a>
+        <a class="navbar-brand" href="/" style="color: maroon; font-size: 30px; margin-right: -2px; font-weight: bold; font-family: Arial, sans-serif;">
+
+            A A ACRYLIC  
+        </a>
+        
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/" style="font-family: cursive; font-size: 19px;">Amazon</a>
+                        <a class="nav-link text-grey" href="/" style="font-size: 17px;">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-grey" href="/about" style="font-size: 17px;">About Us</a>
@@ -53,7 +54,11 @@
                         <a class="nav-link text-grey" href="/contact" style="font-size: 17px;">Contact us</a>
                     </li>
 
-                    <li class="nav-item dropdown mx-2">
+                    <li class="nav-item">
+                        <a class="nav-link text-grey" href="/products" style="font-size: 17px;">All Products</a>
+                    </li>
+
+             <!--       <li class="nav-item dropdown mx-2">
                         <a class="nav-link dropdown-toggle text-grey" href="#" role="button", id="profileDropdown" 
                         data-bs-toggle="dropdown" aria-hidden="false">
                             Manage Product
@@ -66,7 +71,7 @@
                             <li><a class="dropdown-item" href="/products">Product list <i class="fa-solid fa-right-to-bracket"></i></a></li>
                             {% endif %}
                         </ul>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
                 </ul>
@@ -104,6 +109,7 @@
                     <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                         {% if current_user.is_authenticated %}
                         <li><a class="dropdown-item" href="/profile/{{ current_user.id }}">Profile <i class="fa-solid fa-user"></i></a></li>
+                        <li><a class="dropdown-item" href="/admin-page">Admin<i class="fa-solid fa-truck-fast"></i></a></li>
                         <li><a class="dropdown-item" href="/orders">Orders <i class="fa-solid fa-truck-fast"></i></a></li>
                         <li><a class="dropdown-item" href="/logout">Log Out <i class="fa-solid fa-right-from-bracket"></i></a></li>
                         {% else %}
@@ -163,7 +169,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <p style="color:black" class="mb-0">&copy; 2023 Amazon. All rights reserved. | 
+                <p style="color:black" class="mb-0">&copy; 2024 A.  A.  ACRYLIC. All rights reserved. | 
                    <a href="/terms" style="color: black;">Terms of Service</a> | 
                    <a href="/privacy" style="color: black;">Privacy Policy</a>
                 </p>
